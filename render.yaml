@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: xyz-real-estate-chatbot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      # Python Configuration
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      # Flask Configuration
+      - key: FLASK_SECRET_KEY
+        sync: false
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: "False"
+
+      # API Keys
+      - key: GROQ_API_KEY
+        sync: false
+      - key: HUBSPOT_API_KEY
+        sync: false
+
+      # Calendly Configuration
+      - key: CALENDLY_API_KEY
+        sync: false
+      - key: CALENDLY_USERNAME
+        sync: false
+      - key: CALENDLY_EVENT_TYPE
+        sync: false
+      - key: MEETING_DURATION
+        value: "30"
+      - key: MEETING_TYPE
+        value: property-consultation
+
+      # Email Configuration
+      - key: SENDER_EMAIL
+        sync: false
+
+      # Feature Flags
+      - key: ENABLE_LEAD_SCORING
+        value: "True"
+      - key: ENABLE_CRM_SYNC
+        value: "True"
+      - key: ENABLE_CALENDLY
+        value: "True"
+      - key: ENABLE_VECTOR_SEARCH
+        value: "True"
+
+      # Security Configuration
+      - key: SESSION_COOKIE_SECURE
+        value: "True"
+      - key: SESSION_COOKIE_HTTPONLY
+        value: "True"
+      - key: PERMANENT_SESSION_LIFETIME
+        value: "3600"
