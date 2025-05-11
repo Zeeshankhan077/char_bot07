@@ -50,7 +50,13 @@ services:
       - key: ENABLE_CALENDLY
         value: "True"
       - key: ENABLE_VECTOR_SEARCH
+        value: "True"  # Enabled but with memory optimization
+
+      # Memory Management
+      - key: MEMORY_OPTIMIZATION
         value: "True"
+      - key: GC_INTERVAL
+        value: "300"  # Run garbage collection every 5 minutes
 
       # Security Configuration
       - key: SESSION_COOKIE_SECURE
