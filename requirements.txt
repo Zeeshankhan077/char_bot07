@@ -10,12 +10,15 @@ requests==2.31.0
 # Environment Variables
 python-dotenv==0.19.0
 
-# Machine Learning and Data Processing
+# Machine Learning and Data Processing - Optimized for memory usage
 faiss-cpu==1.7.4
 numpy==1.24.3  # Using a version compatible with Python 3.11
 huggingface-hub==0.12.1  # Pinned version for compatibility with sentence-transformers
 sentence-transformers==2.2.2  # Using a more stable version
-transformers==4.28.1  # Using a more compatible version
+# Use a lighter version of transformers
+transformers==4.28.1
+# Add memory optimization packages
+psutil==5.9.5  # For memory monitoring
 
 # Data Serialization is handled by Python's built-in pickle module
 # Development and Testing dependencies are not needed in production
