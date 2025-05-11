@@ -3,12 +3,10 @@ services:
     name: xyz-real-estate-chatbot
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    # Explicitly binding to port 5000 as required by Render
+    startCommand: gunicorn app:app --bind 0.0.0.0:5000
     plan: free
-    # Explicitly set the port
     envVars:
-      - key: PORT 
-       value: 5000
       # Python Configuration
       - key: PYTHON_VERSION
         value: 3.11.11
