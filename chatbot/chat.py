@@ -81,6 +81,14 @@ def call_groq_llama(context, question, lead_params):
             "API key not configured"
         )
 
+    # Run garbage collection before making API call to free up memory
+    try:
+        import gc
+        gc.collect()
+        logger.debug("Garbage collection run before API call")
+    except Exception as e:
+        logger.warning(f"Failed to run garbage collection: {str(e)}")
+
     url = "https://api.groq.com/openai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -174,6 +182,14 @@ Remember to:
                 short_reply.append(line)
 
         short_reply = '\n'.join(short_reply).strip()
+
+        # Run garbage collection after API call to free up memory
+        try:
+            import gc
+            gc.collect()
+        except Exception:
+            pass
+
         return short_reply, lead_score, qualification, schedule_meeting, reply
 
     except requests.RequestException as e:
@@ -212,7 +228,17 @@ def handle_chat(name, email, message, chat_history, budget):
     chat_lines = chat_history.split('\n')
     recent_context = '\n'.join(chat_lines[-3:]) if len(chat_lines) > 3 else chat_history
 
-    context = f"User: name={name}, email={email}, budget={budget}\n{retrieve_context(message)}\nRecent Chat:\n{recent_context}"
+    # Check if vector search is enabled
+    if os.environ.get("ENABLE_VECTOR_SEARCH", "True").lower() == "true":
+        try:
+            vector_context = retrieve_context(message)
+        except Exception as e:
+            logger.error(f"Error retrieving vector context: {str(e)}")
+            vector_context = ["Vector search unavailable."]
+    else:
+        vector_context = ["Vector search disabled."]
+
+    context = f"User: name={name}, email={email}, budget={budget}\n{vector_context}\nRecent Chat:\n{recent_context}"
     chat_history += f"\nUser: {message}"
 
     # Enhanced lead parameters
