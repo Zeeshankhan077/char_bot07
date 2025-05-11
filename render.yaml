@@ -7,7 +7,7 @@ services:
     envVars:
       # Python Configuration
       - key: PYTHON_VERSION
-        value: 3.10.12
+        value: 3.11.11
       # Flask Configuration
       - key: FLASK_SECRET_KEY
         sync: false
