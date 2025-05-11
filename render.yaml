@@ -7,8 +7,8 @@ services:
     plan: free
     # Explicitly set the port
     envVars:
-      - key: PORT
-        value: 10000
+      - key: PORT 
+       value: 5000
       # Python Configuration
       - key: PYTHON_VERSION
         value: 3.11.11
